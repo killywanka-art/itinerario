@@ -16,66 +16,87 @@
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             color: #333;
             line-height: 1.6;
-            padding: 20px;
+            padding: 0;
             min-height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
+        .mobile-container {
+            max-width: 100%;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            min-height: 100vh;
         }
 
         header {
             background: linear-gradient(to right, #2c3e50, #4a6491);
             color: white;
-            padding: 30px;
+            padding: 20px 15px;
             text-align: center;
             border-bottom: 5px solid #fdbb2d;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             opacity: 0.9;
         }
 
-        .content {
+        .tabs {
             display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
+            background: #34495e;
+            overflow-x: auto;
+            position: sticky;
+            top: 115px;
+            z-index: 99;
+            scrollbar-width: none;
         }
 
-        .main-content {
-            flex: 3;
-            min-width: 300px;
-            padding: 20px;
+        .tabs::-webkit-scrollbar {
+            display: none;
         }
 
-        .sidebar {
+        .tab {
             flex: 1;
-            min-width: 250px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+            padding: 12px 10px;
+            text-align: center;
+            color: white;
+            background: #34495e;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            cursor: pointer;
         }
 
-        .timeline-container {
-            margin: 30px 0;
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .tab.active {
+            background: #2c3e50;
+            border-bottom: 3px solid #fdbb2d;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .day-card {
@@ -85,11 +106,6 @@
             padding: 15px;
             margin: 15px 0;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .day-card:hover {
-            transform: translateY(-5px);
         }
 
         .day-header {
@@ -102,7 +118,7 @@
         }
 
         .day-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #2c3e50;
         }
@@ -110,22 +126,22 @@
         .day-date {
             background: #4a6491;
             color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
         }
 
         .activity {
             display: flex;
             align-items: flex-start;
-            margin: 10px 0;
-            padding: 8px;
+            margin: 12px 0;
+            padding: 10px;
             border-radius: 5px;
             background: #f8f9fa;
         }
 
         .activity-icon {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-right: 10px;
             min-width: 30px;
         }
@@ -133,86 +149,21 @@
         .activity-time {
             font-weight: bold;
             color: #2c3e50;
-            min-width: 100px;
+            min-width: 90px;
+            font-size: 0.85rem;
         }
 
         .activity-desc {
             flex: 1;
-        }
-
-        .gantt-chart {
-            margin: 30px 0;
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
-        }
-
-        .gantt-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            font-size: 1.5rem;
-        }
-
-        .gantt-grid {
-            display: grid;
-            grid-template-columns: 150px repeat(24, 1fr);
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .gantt-time {
-            text-align: center;
-            font-size: 0.8rem;
-            padding: 5px;
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .gantt-activity {
-            padding: 8px;
-            border-radius: 5px;
-            margin: 2px 0;
-            font-size: 0.8rem;
-            color: white;
-            text-align: center;
-        }
-
-        .transport { background: #e74c3c; }
-        .exploration { background: #2ecc71; }
-        .meal { background: #f39c12; }
-        .accommodation { background: #9b59b6; }
-        .border { background: #34495e; }
-        .free-time { background: #3498db; }
-
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 5px 10px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
-            margin-right: 5px;
+            font-size: 0.9rem;
         }
 
         .country-badge {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-left: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 5px;
         }
 
         .costa-rica {
@@ -228,8 +179,9 @@
         h2 {
             color: #2c3e50;
             margin: 20px 0 15px;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #fdbb2d;
+            font-size: 1.3rem;
         }
 
         .highlight-box {
@@ -243,304 +195,407 @@
         .tip-box {
             background: #d1ecf1;
             border-left: 5px solid #17a2b8;
-            padding: 15px;
+            padding: 12px;
             border-radius: 5px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+
+        .destino-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .destino-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .destino-info {
+            flex: 1;
+        }
+
+        .destino-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .destino-days {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .summary-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .summary-info {
+            flex: 1;
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .summary-desc {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        .map-container {
+            height: 200px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+
+        .phase-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .phase-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .phase-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .phase-days {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .phase-activities {
+            margin-top: 10px;
+        }
+
+        .activity-tag {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px 5px 0 0;
+            font-size: 0.8rem;
+        }
+
+        .transport-tag { border-left: 3px solid #e74c3c; }
+        .nature-tag { border-left: 3px solid #2ecc71; }
+        .beach-tag { border-left: 3px solid #3498db; }
+        .adventure-tag { border-left: 3px solid #f39c12; }
+        .border-tag { border-left: 3px solid #34495e; }
+
+        .quick-stats {
+            display: flex;
+            justify-content: space-between;
             margin: 15px 0;
         }
 
-        @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
-            }
-            
-            .gantt-grid {
-                grid-template-columns: 100px repeat(12, 1fr);
-                font-size: 0.7rem;
-            }
+        .stat {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .footer p {
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="mobile-container">
         <header>
-            <h1>🌎 Itinerario de Viaje Costa Rica - Panamá</h1>
-            <p class="subtitle">Del 30 de Octubre al 11 de Noviembre | Aventura, Naturaleza y Playas</p>
+            <h1>🌎 Viaje Costa Rica - Panamá</h1>
+            <p class="subtitle">30 Oct - 11 Nov | Aventura, Naturaleza y Playas</p>
         </header>
         
-        <div class="content">
-            <div class="main-content">
-                <div class="highlight-box">
-                    <h2>✨ Resumen del Viaje</h2>
-                    <p>Este itinerario de 13 días te llevará desde el imponente Volcán Poás en Costa Rica hasta las paradisíacas islas de Bocas del Toro en Panamá, pasando por el caribe sur y el Parque Nacional Tortuguero.</p>
+        <div class="tabs">
+            <button class="tab active" data-tab="resumen">Resumen</button>
+            <button class="tab" data-tab="itinerario">Itinerario</button>
+            <button class="tab" data-tab="destinos">Destinos</button>
+            <button class="tab" data-tab="consejos">Consejos</button>
+        </div>
+        
+        <div class="tab-content active" id="resumen">
+            <div class="highlight-box">
+                <h2>✨ Resumen del Viaje</h2>
+                <p>13 días explorando los mejores destinos de Costa Rica y Panamá: desde volcanes hasta playas paradisíacas.</p>
+            </div>
+            
+            <div class="quick-stats">
+                <div class="stat">
+                    <div class="stat-value">13</div>
+                    <div class="stat-label">Días</div>
                 </div>
-                
-                <div class="timeline-container">
-                    <h2>🗓️ Línea de Tiempo del Viaje</h2>
-                    
-                    <div class="day-card">
-                        <div class="day-header">
-                            <div class="day-title">Día 1: Volcán Poás</div>
-                            <div class="day-date">Dom 30 Oct</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚌</div>
-                            <div class="activity-time">8:00 - 9:30</div>
-                            <div class="activity-desc">Traslado a terminal de Alajuela</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🌋</div>
-                            <div class="activity-time">9:00 - 13:00</div>
-                            <div class="activity-desc">Bus y exploración del Volcán Poás</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🏠</div>
-                            <div class="activity-time">Tarde/Noche</div>
-                            <div class="activity-desc">Actividad cercana y alojamiento en cabaña</div>
-                        </div>
-                    </div>
-                    
-                    <div class="day-card">
-                        <div class="day-header">
-                            <div class="day-title">Día 2: Hacia Cahuita</div>
-                            <div class="day-date">Lun 01 Nov</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚐</div>
-                            <div class="activity-time">9:00 - 16:00</div>
-                            <div class="activity-desc">Traslado de Alajuela a Cahuita</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🏖️</div>
-                            <div class="activity-time">Tarde/Noche</div>
-                            <div class="activity-desc">Llegada, asentamiento y paseo por Cahuita</div>
-                        </div>
-                    </div>
-                    
-                    <div class="day-card">
-                        <div class="day-header">
-                            <div class="day-title">Día 3: Cruzando a Panamá</div>
-                            <div class="day-date">Mar 02 Nov</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🛂</div>
-                            <div class="activity-time">7:00 - 12:00</div>
-                            <div class="activity-desc">Viaje a frontera y trámites migratorios</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚤</div>
-                            <div class="activity-time">12:00 - 16:00</div>
-                            <div class="activity-desc">Llegada a Isla Colón y instalación</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚴</div>
-                            <div class="activity-time">Tarde (opcional)</div>
-                            <div class="activity-desc">Visita a Playa Bluff en bicicleta</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Más días se agregarían aquí -->
-                    
-                    <div class="day-card">
-                        <div class="day-header">
-                            <div class="day-title">Días 7-8: Caribe Sur</div>
-                            <div class="day-date">Sáb 06 - Dom 07 Nov</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚴</div>
-                            <div class="activity-time">Días completos</div>
-                            <div class="activity-desc">Exploración de playas en bicicleta: Cocles, Punta Uva, Manzanillo</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🐒</div>
-                            <div class="activity-time">Días completos</div>
-                            <div class="activity-desc">Visita al Parque Nacional Cahuita y Refugio Gandoca-Manzanillo</div>
-                        </div>
-                    </div>
-                    
-                    <div class="day-card">
-                        <div class="day-header">
-                            <div class="day-title">Días 9-11: Tortuguero</div>
-                            <div class="day-date">Lun 08 - Mié 10 Nov</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚌+🚤</div>
-                            <div class="activity-time">Lun 08 (todo el día)</div>
-                            <div class="activity-desc">Viaje a Tortuguero (bus + bote)</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🛶</div>
-                            <div class="activity-time">Mar 09 - Mié 10</div>
-                            <div class="activity-desc">Tour canales, senderismo, bicicleta, Cerro Tortuguero</div>
-                        </div>
-                    </div>
-                    
-                    <div class="day-card">
-                        <div class="day-header">
-                            <div class="day-title">Día 12: Regreso a San José</div>
-                            <div class="day-date">Jue 11 Nov</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🚤+🚌</div>
-                            <div class="activity-time">8:00 - 15:00</div>
-                            <div class="activity-desc">Viaje de regreso a San José (bote + bus)</div>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-icon">🏁</div>
-                            <div class="activity-time">15:00</div>
-                            <div class="activity-desc">Fin del viaje</div>
-                        </div>
-                    </div>
+                <div class="stat">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Países</div>
                 </div>
-                
-                <div class="gantt-chart">
-                    <h2 class="gantt-title">📊 Diagrama de Gantt - Día 1 (Ejemplo)</h2>
-                    <div class="gantt-grid">
-                        <div></div>
-                        <div class="gantt-time">6:00</div>
-                        <div class="gantt-time">7:00</div>
-                        <div class="gantt-time">8:00</div>
-                        <div class="gantt-time">9:00</div>
-                        <div class="gantt-time">10:00</div>
-                        <div class="gantt-time">11:00</div>
-                        <div class="gantt-time">12:00</div>
-                        <div class="gantt-time">13:00</div>
-                        <div class="gantt-time">14:00</div>
-                        <div class="gantt-time">15:00</div>
-                        <div class="gantt-time">16:00</div>
-                        <div class="gantt-time">17:00</div>
-                        <div class="gantt-time">18:00</div>
-                        <div class="gantt-time">19:00</div>
-                        <div class="gantt-time">20:00</div>
-                        <div class="gantt-time">21:00</div>
-                        <div class="gantt-time">22:00</div>
-                        
-                        <div>Traslados</div>
-                        <div class="gantt-activity transport" style="grid-column: 3 / 4;"></div>
-                        <div class="gantt-activity transport" style="grid-column: 4 / 6;"></div>
-                        <div class="gantt-activity transport" style="grid-column: 7 / 9;"></div>
-                        
-                        <div>Exploración</div>
-                        <div class="gantt-activity exploration" style="grid-column: 5 / 8;"></div>
-                        
-                        <div>Comidas</div>
-                        <div class="gantt-activity meal" style="grid-column: 8 / 9;"></div>
-                        
-                        <div>Alojamiento</div>
-                        <div class="gantt-activity accommodation" style="grid-column: 10 / 19;"></div>
-                        
-                        <div>Tiempo libre</div>
-                        <div class="gantt-activity free-time" style="grid-column: 9 / 13;"></div>
-                    </div>
-                    
-                    <div class="legend">
-                        <div class="legend-item">
-                            <div class="legend-color transport"></div>
-                            <span>Traslados</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color exploration"></div>
-                            <span>Exploración</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color meal"></div>
-                            <span>Comidas</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color accommodation"></div>
-                            <span>Alojamiento</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color free-time"></div>
-                            <span>Tiempo libre</span>
-                        </div>
-                    </div>
+                <div class="stat">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Destinos</div>
                 </div>
             </div>
             
-            <div class="sidebar">
-                <h2>📍 Destinos Principales</h2>
+            <h2>📅 Fases del Viaje</h2>
+            
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🌋</div>
+                    <div>
+                        <div class="phase-title">Aventura Volcánica</div>
+                        <div class="phase-days">Días 1-2 | Costa Rica</div>
+                    </div>
+                </div>
+                <div class="phase-activities">
+                    <span class="activity-tag nature-tag">Volcán Poás</span>
+                    <span class="activity-tag transport-tag">Traslados</span>
+                    <span class="activity-tag adventure-tag">Cabaña</span>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🏝️</div>
+                    <div>
+                        <div class="phase-title">Islas Panameñas</div>
+                        <div class="phase-days">Días 3-5 | Panamá</div>
+                    </div>
+                </div>
+                <div class="phase-activities">
+                    <span class="activity-tag border-tag">Cruce Fronterizo</span>
+                    <span class="activity-tag beach-tag">Bocas del Toro</span>
+                    <span class="activity-tag adventure-tag">Soropta</span>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🏖️</div>
+                    <div>
+                        <div class="phase-title">Caribe Sur</div>
+                        <div class="phase-days">Días 6-8 | Costa Rica</div>
+                    </div>
+                </div>
+                <div class="phase-activities">
+                    <span class="activity-tag beach-tag">Playas</span>
+                    <span class="activity-tag nature-tag">Parque Cahuita</span>
+                    <span class="activity-tag adventure-tag">Bicicleta</span>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🐢</div>
+                    <div>
+                        <div class="phase-title">Paraíso Natural</div>
+                        <div class="phase-days">Días 9-12 | Costa Rica</div>
+                    </div>
+                </div>
+                <div class="phase-activities">
+                    <span class="activity-tag nature-tag">Tortuguero</span>
+                    <span class="activity-tag adventure-tag">Canales</span>
+                    <span class="activity-tag transport-tag">Regreso</span>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                Mapa del Recorrido
+            </div>
+        </div>
+        
+        <div class="tab-content" id="itinerario">
+            <h2>🗓️ Itinerario Detallado</h2>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Día 1: Volcán Poás</div>
+                    <div class="day-date">Dom 30</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚌</div>
+                    <div class="activity-time">8:00-9:30</div>
+                    <div class="activity-desc">Traslado a terminal de Alajuela</div>
+                </div>
                 <div class="activity">
                     <div class="activity-icon">🌋</div>
-                    <div class="activity-desc">
-                        <strong>Volcán Poás</strong>
-                        <span class="country-badge costa-rica">Costa Rica</span>
-                    </div>
+                    <div class="activity-time">9:00-13:00</div>
+                    <div class="activity-desc">Bus y exploración del Volcán Poás</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🏠</div>
+                    <div class="activity-time">Tarde/Noche</div>
+                    <div class="activity-desc">Actividad cercana y alojamiento en cabaña</div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Día 2: Hacia Cahuita</div>
+                    <div class="day-date">Lun 01</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚐</div>
+                    <div class="activity-time">9:00-16:00</div>
+                    <div class="activity-desc">Traslado de Alajuela a Cahuita</div>
                 </div>
                 <div class="activity">
                     <div class="activity-icon">🏖️</div>
-                    <div class="activity-desc">
-                        <strong>Cahuita</strong>
-                        <span class="country-badge costa-rica">Costa Rica</span>
-                    </div>
+                    <div class="activity-time">Tarde/Noche</div>
+                    <div class="activity-desc">Llegada, asentamiento y paseo por Cahuita</div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Día 3: Cruzando a Panamá</div>
+                    <div class="day-date">Mar 02</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🛂</div>
+                    <div class="activity-time">7:00-12:00</div>
+                    <div class="activity-desc">Viaje a frontera y trámites migratorios</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚤</div>
+                    <div class="activity-time">12:00-16:00</div>
+                    <div class="activity-desc">Llegada a Isla Colón y instalación</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚴</div>
+                    <div class="activity-time">Tarde (opc)</div>
+                    <div class="activity-desc">Visita a Playa Bluff en bicicleta</div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Día 4: Explorando Bocas</div>
+                    <div class="day-date">Mié 03</div>
                 </div>
                 <div class="activity">
                     <div class="activity-icon">🏝️</div>
-                    <div class="activity-desc">
-                        <strong>Bocas del Toro</strong>
-                        <span class="country-badge panama">Panamá</span>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🏖️</div>
-                    <div class="activity-desc">
-                        <strong>Puerto Viejo</strong>
-                        <span class="country-badge costa-rica">Costa Rica</span>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🐢</div>
-                    <div class="activity-desc">
-                        <strong>Tortuguero</strong>
-                        <span class="country-badge costa-rica">Costa Rica</span>
-                    </div>
-                </div>
-                
-                <h2>💡 Consejos de Viaje</h2>
-                <div class="tip-box">
-                    <strong>Poás:</strong> Reserva con antelación en el sitio web del SINAC.
-                </div>
-                <div class="tip-box">
-                    <strong>Frontera:</strong> Lleva efectivo (dólares para Panamá, colones para CR).
-                </div>
-                <div class="tip-box">
-                    <strong>Bocas del Toro:</strong> Confirma todos los detalles con Raúl y Orlando con días de antelación.
-                </div>
-                <div class="tip-box">
-                    <strong>Caribe Sur:</strong> Alquila bicicletas para moverte entre playas.
-                </div>
-                
-                <h2>📅 Resumen por Países</h2>
-                <div class="activity">
-                    <div class="activity-icon">🇨🇷</div>
-                    <div class="activity-desc">
-                        <strong>Costa Rica</strong><br>
-                        Días: 1-2, 5-12<br>
-                        Destinos: 6
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🇵🇦</div>
-                    <div class="activity-desc">
-                        <strong>Panamá</strong><br>
-                        Días: 3-5<br>
-                        Destinos: 3
-                    </div>
+                    <div class="activity-time">Día completo</div>
+                    <div class="activity-desc">Playa Drago, Cuevas, Carenero, Playa Estrella</div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <script>
-        // Pequeño script para hacer las tarjetas de día más interactivas
-        document.addEventListener('DOMContentLoaded', function() {
-            const dayCards = document.querySelectorAll('.day-card');
             
-            dayCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    this.classList.toggle('expanded');
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Día 5: Aventura en Soropta</div>
+                    <div class="day-date">Jue 04</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚤</div>
+                    <div class="activity-time">8:00-9:30</div>
+                    <div class="activity-desc">Bote a Soropta con Raúl</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🛶</div>
+                    <div class="activity-time">Día completo</div>
+                    <div class="activity-desc">Canoa por la reserva</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🏕️</div>
+                    <div class="activity-time">Noche</div>
+                    <div class="activity-desc">Pernocta en estación</div>
+                </div>
+            </div>
+            
+            <!-- Más días se agregarían aquí -->
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Días 6-8: Caribe Sur</div>
+                    <div class="day-date">Vie 05 - Dom 07</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚤+🚌</div>
+                    <div class="activity-time">Vie 05</div>
+                    <div class="activity-desc">Regreso a Costa Rica y llegada a Puerto Viejo</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚴</div>
+                    <div class="activity-time">Sáb 06 - Dom 07</div>
+                    <div class="activity-desc">Exploración de playas en bicicleta</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🐒</div>
+                    <div class="activity-time">Sáb 06 - Dom 07</div>
+                    <div class="activity-desc">Parque Cahuita y Refugio Gandoca-Manzanillo</div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Días 9-11: Tortuguero</div>
+                    <div class="day-date">Lun 08 - Mié 10</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🚌+🚤</div>
+                    <div class="activity-time">Lun 08</div>
+                    <div class="activity-desc">Viaje a Tortuguero (bus + bote)</div>
+                </div>
+                <div class="activity">
+                    <div class="activity-icon">🛶</div>
+                    <div class="activity-time">Mar 09 - Mié 10</div>
+                    <div class="activity-desc">Tour canales, senderismo, bicicleta</div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">Día 12: Regreso</div>
+                    <div class="day-da
