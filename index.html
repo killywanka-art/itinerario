@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itinerario de Viaje Costa Rica - Panamá</title>
+    <title>Itinerario Costa Rica - Panamá</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -12,9 +14,21 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        :root {
+            --primary: #2c3e50;
+            --secondary: #4a6491;
+            --accent: #fdbb2d;
+            --costa-rica: #2ecc71;
+            --panama: #3498db;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+        }
+
         body {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
+            color: var(--text);
             line-height: 1.6;
             padding: 0;
             min-height: 100vh;
@@ -28,14 +42,15 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             min-height: 100vh;
+            position: relative;
         }
 
         header {
-            background: linear-gradient(to right, #2c3e50, #4a6491);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             padding: 20px 15px;
             text-align: center;
-            border-bottom: 5px solid #fdbb2d;
+            border-bottom: 5px solid var(--accent);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -53,12 +68,13 @@
 
         .tabs {
             display: flex;
-            background: #34495e;
+            background: var(--primary);
             overflow-x: auto;
             position: sticky;
             top: 115px;
             z-index: 99;
             scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         .tabs::-webkit-scrollbar {
@@ -71,17 +87,18 @@
             padding: 12px 10px;
             text-align: center;
             color: white;
-            background: #34495e;
+            background: var(--primary);
             border: none;
             border-bottom: 3px solid transparent;
             font-size: 0.85rem;
             white-space: nowrap;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .tab.active {
-            background: #2c3e50;
-            border-bottom: 3px solid #fdbb2d;
+            background: var(--secondary);
+            border-bottom: 3px solid var(--accent);
         }
 
         .tab-content {
@@ -91,8 +108,8 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .tab-content.active {
@@ -101,11 +118,17 @@
 
         .day-card {
             background: white;
-            border-left: 5px solid #4a6491;
+            border-left: 5px solid var(--secondary);
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .day-card.expanded {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
 
         .day-header {
@@ -120,11 +143,11 @@
         .day-title {
             font-size: 1.1rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
         }
 
         .day-date {
-            background: #4a6491;
+            background: var(--secondary);
             color: white;
             padding: 4px 8px;
             border-radius: 15px;
@@ -137,18 +160,24 @@
             margin: 12px 0;
             padding: 10px;
             border-radius: 5px;
-            background: #f8f9fa;
+            background: var(--light);
+            transition: background 0.3s ease;
+        }
+
+        .activity:hover {
+            background: #e9ecef;
         }
 
         .activity-icon {
             font-size: 1.3rem;
             margin-right: 10px;
             min-width: 30px;
+            text-align: center;
         }
 
         .activity-time {
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
             min-width: 90px;
             font-size: 0.85rem;
         }
@@ -167,25 +196,25 @@
         }
 
         .costa-rica {
-            background: #2ecc71;
+            background: var(--costa-rica);
             color: white;
         }
 
         .panama {
-            background: #3498db;
+            background: var(--panama);
             color: white;
         }
 
         h2 {
-            color: #2c3e50;
+            color: var(--dark);
             margin: 20px 0 15px;
             padding-bottom: 8px;
-            border-bottom: 2px solid #fdbb2d;
+            border-bottom: 2px solid var(--accent);
             font-size: 1.3rem;
         }
 
         .highlight-box {
-            background: linear-gradient(to right, #ffeaa7, #fdbb2d);
+            background: linear-gradient(to right, #ffeaa7, var(--accent));
             padding: 15px;
             border-radius: 8px;
             margin: 15px 0;
@@ -207,7 +236,12 @@
             margin: 10px 0;
             padding: 10px;
             border-radius: 8px;
-            background: #f8f9fa;
+            background: var(--light);
+            transition: transform 0.3s ease;
+        }
+
+        .destino-item:hover {
+            transform: translateX(5px);
         }
 
         .destino-icon {
@@ -221,12 +255,12 @@
 
         .destino-name {
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
         }
 
         .destino-days {
             font-size: 0.8rem;
-            color: #7f8c8d;
+            color: var(--text-light);
         }
 
         .summary-item {
@@ -235,7 +269,7 @@
             margin: 12px 0;
             padding: 10px;
             border-radius: 8px;
-            background: #f8f9fa;
+            background: var(--light);
         }
 
         .summary-icon {
@@ -249,12 +283,12 @@
 
         .summary-title {
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
         }
 
         .summary-desc {
             font-size: 0.85rem;
-            color: #7f8c8d;
+            color: var(--text-light);
         }
 
         .map-container {
@@ -265,8 +299,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #7f8c8d;
+            color: var(--text-light);
             font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
         .phase-card {
@@ -275,6 +326,11 @@
             padding: 15px;
             margin: 15px 0;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-3px);
         }
 
         .phase-header {
@@ -291,12 +347,12 @@
         .phase-title {
             font-size: 1.1rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
         }
 
         .phase-days {
             font-size: 0.9rem;
-            color: #7f8c8d;
+            color: var(--text-light);
         }
 
         .phase-activities {
@@ -313,10 +369,10 @@
         }
 
         .transport-tag { border-left: 3px solid #e74c3c; }
-        .nature-tag { border-left: 3px solid #2ecc71; }
-        .beach-tag { border-left: 3px solid #3498db; }
+        .nature-tag { border-left: 3px solid var(--costa-rica); }
+        .beach-tag { border-left: 3px solid var(--panama); }
         .adventure-tag { border-left: 3px solid #f39c12; }
-        .border-tag { border-left: 3px solid #34495e; }
+        .border-tag { border-left: 3px solid var(--primary); }
 
         .quick-stats {
             display: flex;
@@ -328,21 +384,31 @@
             text-align: center;
             flex: 1;
             padding: 10px;
+            background: white;
+            border-radius: 8px;
+            margin: 0 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--dark);
         }
 
         .stat-label {
             font-size: 0.8rem;
-            color: #7f8c8d;
+            color: var(--text-light);
+        }
+
+        .chart-container {
+            height: 200px;
+            margin: 15px 0;
+            position: relative;
         }
 
         .footer {
-            background: #2c3e50;
+            background: var(--primary);
             color: white;
             text-align: center;
             padding: 15px;
@@ -352,9 +418,86 @@
         .footer p {
             font-size: 0.8rem;
         }
+
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 101;
+            transition: width 0.3s ease;
+        }
+
+        .search-box {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            background: var(--light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .notification {
+            position: fixed;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--costa-rica);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="notification" id="notification"></div>
+    
     <div class="mobile-container">
         <header>
             <h1>🌎 Viaje Costa Rica - Panamá</h1>
@@ -362,10 +505,10 @@
         </header>
         
         <div class="tabs">
-            <button class="tab active" data-tab="resumen">Resumen</button>
-            <button class="tab" data-tab="itinerario">Itinerario</button>
-            <button class="tab" data-tab="destinos">Destinos</button>
-            <button class="tab" data-tab="consejos">Consejos</button>
+            <button class="tab active" data-tab="resumen"><i class="fas fa-home"></i> Resumen</button>
+            <button class="tab" data-tab="itinerario"><i class="fas fa-route"></i> Itinerario</button>
+            <button class="tab" data-tab="destinos"><i class="fas fa-map-marked-alt"></i> Destinos</button>
+            <button class="tab" data-tab="consejos"><i class="fas fa-lightbulb"></i> Consejos</button>
         </div>
         
         <div class="tab-content active" id="resumen">
@@ -389,9 +532,13 @@
                 </div>
             </div>
             
+            <div class="chart-container">
+                <canvas id="daysChart"></canvas>
+            </div>
+            
             <h2>📅 Fases del Viaje</h2>
             
-            <div class="phase-card">
+            <div class="phase-card" data-phase="1">
                 <div class="phase-header">
                     <div class="phase-icon">🌋</div>
                     <div>
@@ -406,7 +553,7 @@
                 </div>
             </div>
             
-            <div class="phase-card">
+            <div class="phase-card" data-phase="2">
                 <div class="phase-header">
                     <div class="phase-icon">🏝️</div>
                     <div>
@@ -421,7 +568,7 @@
                 </div>
             </div>
             
-            <div class="phase-card">
+            <div class="phase-card" data-phase="3">
                 <div class="phase-header">
                     <div class="phase-icon">🏖️</div>
                     <div>
@@ -436,7 +583,7 @@
                 </div>
             </div>
             
-            <div class="phase-card">
+            <div class="phase-card" data-phase="4">
                 <div class="phase-header">
                     <div class="phase-icon">🐢</div>
                     <div>
@@ -452,14 +599,19 @@
             </div>
             
             <div class="map-container">
-                Mapa del Recorrido
+                <div class="map-overlay">Mapa Interactivo del Recorrido</div>
             </div>
         </div>
         
         <div class="tab-content" id="itinerario">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar en itinerario...">
+            </div>
+            
             <h2>🗓️ Itinerario Detallado</h2>
             
-            <div class="day-card">
+            <div class="day-card" data-day="1">
                 <div class="day-header">
                     <div class="day-title">Día 1: Volcán Poás</div>
                     <div class="day-date">Dom 30</div>
@@ -481,7 +633,7 @@
                 </div>
             </div>
             
-            <div class="day-card">
+            <div class="day-card" data-day="2">
                 <div class="day-header">
                     <div class="day-title">Día 2: Hacia Cahuita</div>
                     <div class="day-date">Lun 01</div>
@@ -498,7 +650,7 @@
                 </div>
             </div>
             
-            <div class="day-card">
+            <div class="day-card" data-day="3">
                 <div class="day-header">
                     <div class="day-title">Día 3: Cruzando a Panamá</div>
                     <div class="day-date">Mar 02</div>
@@ -509,93 +661,4 @@
                     <div class="activity-desc">Viaje a frontera y trámites migratorios</div>
                 </div>
                 <div class="activity">
-                    <div class="activity-icon">🚤</div>
-                    <div class="activity-time">12:00-16:00</div>
-                    <div class="activity-desc">Llegada a Isla Colón y instalación</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🚴</div>
-                    <div class="activity-time">Tarde (opc)</div>
-                    <div class="activity-desc">Visita a Playa Bluff en bicicleta</div>
-                </div>
-            </div>
-            
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">Día 4: Explorando Bocas</div>
-                    <div class="day-date">Mié 03</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🏝️</div>
-                    <div class="activity-time">Día completo</div>
-                    <div class="activity-desc">Playa Drago, Cuevas, Carenero, Playa Estrella</div>
-                </div>
-            </div>
-            
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">Día 5: Aventura en Soropta</div>
-                    <div class="day-date">Jue 04</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🚤</div>
-                    <div class="activity-time">8:00-9:30</div>
-                    <div class="activity-desc">Bote a Soropta con Raúl</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🛶</div>
-                    <div class="activity-time">Día completo</div>
-                    <div class="activity-desc">Canoa por la reserva</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🏕️</div>
-                    <div class="activity-time">Noche</div>
-                    <div class="activity-desc">Pernocta en estación</div>
-                </div>
-            </div>
-            
-            <!-- Más días se agregarían aquí -->
-            
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">Días 6-8: Caribe Sur</div>
-                    <div class="day-date">Vie 05 - Dom 07</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🚤+🚌</div>
-                    <div class="activity-time">Vie 05</div>
-                    <div class="activity-desc">Regreso a Costa Rica y llegada a Puerto Viejo</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🚴</div>
-                    <div class="activity-time">Sáb 06 - Dom 07</div>
-                    <div class="activity-desc">Exploración de playas en bicicleta</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🐒</div>
-                    <div class="activity-time">Sáb 06 - Dom 07</div>
-                    <div class="activity-desc">Parque Cahuita y Refugio Gandoca-Manzanillo</div>
-                </div>
-            </div>
-            
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">Días 9-11: Tortuguero</div>
-                    <div class="day-date">Lun 08 - Mié 10</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🚌+🚤</div>
-                    <div class="activity-time">Lun 08</div>
-                    <div class="activity-desc">Viaje a Tortuguero (bus + bote)</div>
-                </div>
-                <div class="activity">
-                    <div class="activity-icon">🛶</div>
-                    <div class="activity-time">Mar 09 - Mié 10</div>
-                    <div class="activity-desc">Tour canales, senderismo, bicicleta</div>
-                </div>
-            </div>
-            
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">Día 12: Regreso</div>
-                    <div class="day-da
+    
